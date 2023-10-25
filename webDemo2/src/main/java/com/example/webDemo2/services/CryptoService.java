@@ -11,6 +11,10 @@ public class CryptoService {
     private List<CryptoCurrency> currencies = new ArrayList<>();
 
     public String addCurrency(CryptoCurrency currency) {
+        for (CryptoCurrency c: currencies) {
+            if(c.getId().equals(currency.getId()))
+                return "Id already in use";
+        }
         currencies.add(currency);
         return "Crypto Currency added";
     }
@@ -19,8 +23,8 @@ public class CryptoService {
         return currencies;
     }
 
-    public List<CryptoCurrency> getCurrenciesById(String id) {
-        return currencies.stream().filter(c-> c.getId().equals(id)).toList();
+    public CryptoCurrency getCurrenciesById(String id) {
+        return currencies.stream().filter(c-> c.getId().equals(id)).findFirst().orElseThrow();
     }
 
     public List<CryptoCurrency> getCurrenciesAbovePrice(double price) {

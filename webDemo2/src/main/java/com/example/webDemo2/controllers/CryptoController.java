@@ -21,7 +21,7 @@ public class CryptoController {
     }
 
     @GetMapping("byId")
-    public List<CryptoCurrency> getById(String id) {
+    public CryptoCurrency getById(String id) {
         return service.getCurrenciesById(id);
     }
 
