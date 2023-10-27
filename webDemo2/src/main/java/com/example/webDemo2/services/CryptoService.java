@@ -4,19 +4,20 @@ import com.example.webDemo2.models.CryptoCurrency;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
 public class CryptoService {
     private List<CryptoCurrency> currencies = new ArrayList<>();
 
-    public String addCurrency(CryptoCurrency currency) {
+    public boolean addCurrency(CryptoCurrency currency) {
         for (CryptoCurrency c: currencies) {
             if(c.getId().equals(currency.getId()))
-                return "Id already in use";
+                return false;
         }
         currencies.add(currency);
-        return "Crypto Currency added";
+        return true;
     }
 
     public List<CryptoCurrency> getAllCurrencies() {
@@ -28,20 +29,21 @@ public class CryptoService {
     }
 
     public List<CryptoCurrency> getCurrenciesAbovePrice(double price) {
-        return currencies.stream().filter(c-> c.getPrice() >= price).toList();
+        return currencies.stream().filter(c-> c.getPrice() > price).toList();
     }
 
-    public String deleteCurrencyById(String id) {
+    public boolean deleteCurrencyById(String id) {
+        Iterator<CryptoCurrency> iterator = currencies.iterator();
         boolean found = false;
-        for (CryptoCurrency currency: currencies) {
+
+        while (iterator.hasNext()) {
+            CryptoCurrency currency = iterator.next();
             if (currency.getId().equals(id)) {
+                iterator.remove(); // Use the iterator's remove method to safely remove the element.
                 found = true;
-                currencies.remove(currency);
             }
         }
-        if (found)
-            return "Currency deleted";
-        else
-            return "Currency not found";
+
+        return found;
     }
 }

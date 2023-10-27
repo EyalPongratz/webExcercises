@@ -47,4 +47,13 @@ public class CryptoCurrency {
     public void setMarketCap(long marketCap) {
         this.marketCap = marketCap;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        CryptoCurrency other = (CryptoCurrency) o;
+        return this.id.equals(other.getId()) && this.name.equals(other.getName()) &&
+                this.price == other.getPrice() && this.marketCap == other.getMarketCap();
+    }
 }
